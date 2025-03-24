@@ -1,10 +1,13 @@
 
 import React, { useEffect, useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogIn } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import CTAButton from './CTAButton';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   const navItems = [
     { name: 'About', href: '#about' },
@@ -73,6 +76,22 @@ const Header = () => {
               {item.name}
             </a>
           ))}
+          
+          {user ? (
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium">Hi, {user.name || user.email}</span>
+              <CTAButton variant="secondary" size="sm" onClick={logout}>
+                Logout
+              </CTAButton>
+            </div>
+          ) : (
+            <a href="/auth">
+              <CTAButton variant="primary" size="sm">
+                <LogIn className="w-4 h-4 mr-1" />
+                Sign In
+              </CTAButton>
+            </a>
+          )}
         </nav>
 
         {/* Mobile menu button */}
@@ -103,6 +122,22 @@ const Header = () => {
               {item.name}
             </a>
           ))}
+          
+          {user ? (
+            <div className="flex flex-col gap-3">
+              <span className="text-sm font-medium">Hi, {user.name || user.email}</span>
+              <CTAButton variant="secondary" size="sm" onClick={logout}>
+                Logout
+              </CTAButton>
+            </div>
+          ) : (
+            <a href="/auth" onClick={handleNavClick}>
+              <CTAButton variant="primary" size="sm">
+                <LogIn className="w-4 h-4 mr-1" />
+                Sign In
+              </CTAButton>
+            </a>
+          )}
         </nav>
       </div>
     </header>
