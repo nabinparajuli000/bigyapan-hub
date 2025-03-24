@@ -11,8 +11,8 @@ const Header = () => {
     { name: 'Services', href: '#services' },
     { name: 'Portfolio', href: '#portfolio' },
     { name: 'Blog', href: '#blog' },
-    { name: 'Contact', href: '#contact' },
     { name: 'Careers', href: '#careers' },
+    { name: 'Contact', href: '#contact' },
   ];
 
   useEffect(() => {
@@ -33,6 +33,14 @@ const Header = () => {
     if (!isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
+      document.body.style.overflow = 'auto';
+    }
+  };
+
+  // Handle navigation click to close mobile menu
+  const handleNavClick = () => {
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
       document.body.style.overflow = 'auto';
     }
   };
@@ -60,6 +68,7 @@ const Header = () => {
               key={item.name}
               href={item.href}
               className="text-base font-medium text-bigyapan-dark hover:text-bigyapan-blue transition-colors"
+              onClick={handleNavClick}
             >
               {item.name}
             </a>
@@ -89,7 +98,7 @@ const Header = () => {
               key={item.name}
               href={item.href}
               className="text-xl font-medium text-bigyapan-dark hover:text-bigyapan-blue transition-colors"
-              onClick={toggleMobileMenu}
+              onClick={handleNavClick}
             >
               {item.name}
             </a>
