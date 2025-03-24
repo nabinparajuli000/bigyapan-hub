@@ -4,7 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ArrowLeft, Eye, EyeOff, Loader2, Mail, Key, User, Github, Twitter } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  Eye, 
+  EyeOff, 
+  Loader2, 
+  Mail, 
+  Key, 
+  User, 
+  Github, 
+  Twitter,
+  Phone,
+} from 'lucide-react';
 
 import { useAuth } from '@/hooks/useAuth';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -44,27 +55,28 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const [resetEmailSent, setResetEmailSent] = useState(false);
+  const [isPhoneDialogOpen, setIsPhoneDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { login, signup, isLoading } = useAuth();
 
-  // Login form setup
+  // Login form setup with pre-filled example email
   const loginForm = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "bigyapanhub@gmail.com",
+      password: "password",
       rememberMe: false,
     },
   });
 
-  // Signup form setup
+  // Signup form setup with pre-filled data
   const signupForm = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      name: "BigyapanHub User",
+      email: "bigyapanhub@gmail.com",
+      password: "password123",
+      confirmPassword: "password123",
     },
   });
 
@@ -72,7 +84,7 @@ const Auth = () => {
   const resetPasswordForm = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      email: "",
+      email: "bigyapanhub@gmail.com",
     },
   });
 
@@ -121,6 +133,34 @@ const Auth = () => {
     }
   };
 
+  // Handle Google sign in
+  const handleGoogleSignIn = async () => {
+    try {
+      // Simulate API call for Google OAuth
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Mock successful Google sign-in
+      login("bigyapanhub@gmail.com", "google-auth-token");
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Handle phone verification success
+  const handlePhoneVerification = async () => {
+    try {
+      // Simulate API call for phone verification
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Mock successful phone sign-in with the provided phone number
+      signup("+977 9856075558", "phone-auth-token", "Phone User");
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // Toggle between login and signup forms with animation
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -162,7 +202,7 @@ const Auth = () => {
                         <FormControl>
                           <div className="relative">
                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                            <Input className="pl-10" placeholder="you@example.com" {...field} />
+                            <Input className="pl-10" placeholder="bigyapanhub@gmail.com" {...field} />
                           </div>
                         </FormControl>
                         <FormMessage />
@@ -261,7 +301,7 @@ const Auth = () => {
                                     <FormItem>
                                       <FormLabel>Email</FormLabel>
                                       <FormControl>
-                                        <Input placeholder="you@example.com" {...field} />
+                                        <Input placeholder="bigyapanhub@gmail.com" {...field} />
                                       </FormControl>
                                       <FormMessage />
                                     </FormItem>
@@ -301,14 +341,18 @@ const Auth = () => {
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-3 gap-3">
+                    <Button variant="outline" type="button" className="w-full" onClick={handleGoogleSignIn}>
+                      <Mail className="mr-2 h-4 w-4" />
+                      Gmail
+                    </Button>
+                    <Button variant="outline" type="button" className="w-full" onClick={handlePhoneVerification}>
+                      <Phone className="mr-2 h-4 w-4" />
+                      Phone
+                    </Button>
                     <Button variant="outline" type="button" className="w-full">
                       <Github className="mr-2 h-4 w-4" />
                       Github
-                    </Button>
-                    <Button variant="outline" type="button" className="w-full">
-                      <Twitter className="mr-2 h-4 w-4" />
-                      Twitter
                     </Button>
                   </div>
                 </form>
@@ -325,7 +369,7 @@ const Auth = () => {
                         <FormControl>
                           <div className="relative">
                             <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                            <Input className="pl-10" placeholder="John Doe" {...field} />
+                            <Input className="pl-10" placeholder="BigyapanHub User" {...field} />
                           </div>
                         </FormControl>
                         <FormMessage />
@@ -342,7 +386,7 @@ const Auth = () => {
                         <FormControl>
                           <div className="relative">
                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                            <Input className="pl-10" placeholder="you@example.com" {...field} />
+                            <Input className="pl-10" placeholder="bigyapanhub@gmail.com" {...field} />
                           </div>
                         </FormControl>
                         <FormMessage />
@@ -427,14 +471,18 @@ const Auth = () => {
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-3 gap-3">
+                    <Button variant="outline" type="button" className="w-full" onClick={handleGoogleSignIn}>
+                      <Mail className="mr-2 h-4 w-4" />
+                      Gmail
+                    </Button>
+                    <Button variant="outline" type="button" className="w-full" onClick={handlePhoneVerification}>
+                      <Phone className="mr-2 h-4 w-4" />
+                      Phone
+                    </Button>
                     <Button variant="outline" type="button" className="w-full">
                       <Github className="mr-2 h-4 w-4" />
                       Github
-                    </Button>
-                    <Button variant="outline" type="button" className="w-full">
-                      <Twitter className="mr-2 h-4 w-4" />
-                      Twitter
                     </Button>
                   </div>
                 </form>
